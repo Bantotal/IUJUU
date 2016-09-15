@@ -1,0 +1,61 @@
+{
+  "name": "regalo",
+  "base": "PersistedModel",
+  "strict": false,
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "id": true
+    },
+    "idUsuarioAdmin": {
+      "type": "string",
+      "required": true
+    },
+    "IdMotivo": {
+      "type": "string",
+      "required": true
+    },
+    "saldo": {
+      "type": "number"
+    },
+    "fechaDeInicio": {
+      "type": "date",
+      "required": true
+    },
+    "fechaDeFin": {
+      "type": "date",
+      "required": true
+    },
+    "titulo": {
+      "type": "string",
+      "required": true
+    },
+    "regaloSugerido": {
+      "type": "string"
+    },
+    "montoSugeridoDelRegalo": {
+      "type": "number",
+      "required": true
+    },
+    "montoSugeridoPorPersona": {
+      "type": "number"
+    },
+    "imagen": {
+      "type": "string"
+    },
+    "estado": {
+      "type": "object"
+    },
+    "info": {
+      "type": "object"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

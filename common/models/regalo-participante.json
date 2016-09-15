@@ -1,0 +1,41 @@
+{
+  "name": "regaloParticipante",
+  "base": "PersistedModel",
+  "strict": false,
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "id": true
+    },
+    "idUsuario": {
+      "type": "string",
+      "required": true
+    },
+    "idRegalo": {
+      "type": "string",
+      "required": true
+    },
+    "idUsuarioCuenta": {
+      "type": "string",
+      "required": true
+    },
+    "importe": {
+      "type": "string",
+      "required": true
+    },
+    "foto": {
+      "type": "string"
+    },
+    "mensaje": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
