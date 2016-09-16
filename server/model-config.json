@@ -36,7 +36,7 @@
     "dataSource": "db",
     "public": true,
     "$promise": {},
-    "$resolved": true
+    "$resolved": false
   },
   "metodoDePago": {
     "dataSource": "db",
@@ -44,9 +44,9 @@
     "$promise": {},
     "$resolved": true
   },
-  "usuarioCuenta": {
+  "cuenta": {
     "dataSource": "db",
-    "public": true,
+    "public": false,
     "$promise": {},
     "$resolved": true
   },
@@ -64,13 +64,13 @@
   },
   "regalo": {
     "dataSource": "db",
-    "public": true,
+    "public": false,
     "$promise": {},
     "$resolved": true
   },
-  "regaloParticipante": {
+  "participacion": {
     "dataSource": "db",
-    "public": true,
+    "public": false,
     "$promise": {},
     "$resolved": true
   }

@@ -1,7 +1,7 @@
 {
   "name": "usuario",
   "base": "PersistedModel",
-  "strict": false,
+  "strict": true,
   "idInjection": false,
   "options": {
     "validateUpsert": true
@@ -38,7 +38,23 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "regalos": {
+      "type": "hasMany",
+      "model": "regalo",
+      "foreignKey": "regaloId"
+    },
+    "participacions": {
+      "type": "hasMany",
+      "model": "participacion",
+      "foreignKey": "participacionId"
+    },
+    "cuenta": {
+      "type": "hasMany",
+      "model": "cuenta",
+      "foreignKey": "cuentaId"
+    }
+  },
   "acls": [],
   "methods": {}
 }

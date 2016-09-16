@@ -11,14 +11,6 @@
       "type": "string",
       "id": true
     },
-    "idUsuarioAdmin": {
-      "type": "string",
-      "required": true
-    },
-    "IdMotivo": {
-      "type": "string",
-      "required": true
-    },
     "saldo": {
       "type": "number"
     },
@@ -55,7 +47,23 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "usuarioAdmin": {
+      "type": "hasOne",
+      "model": "usuario",
+      "foreignKey": "usuarioAdmin"
+    },
+    "motivo": {
+      "type": "hasOne",
+      "model": "motivo",
+      "foreignKey": "motivoId"
+    },
+    "participaciones": {
+      "type": "hasMany",
+      "model": "participacion",
+      "foreignKey": "participacionId"
+    }
+  },
   "acls": [],
   "methods": {}
 }

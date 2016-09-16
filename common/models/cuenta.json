@@ -1,5 +1,5 @@
 {
-  "name": "usuarioCuenta",
+  "name": "cuenta",
   "base": "PersistedModel",
   "strict": false,
   "idInjection": false,
@@ -11,11 +11,7 @@
       "type": "string",
       "id": true
     },
-    "idUsuario": {
-      "type": "string",
-      "required": true
-    },
-    "idMetodoDePago": {
+    "descripcion": {
       "type": "string",
       "required": true
     },
@@ -25,7 +21,18 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "usuario": {
+      "type": "hasOne",
+      "model": "usuario",
+      "foreignKey": "usuarioId"
+    },
+    "metodoDePago": {
+      "type": "hasOne",
+      "model": "metodoDePago",
+      "foreignKey": "metodoDePagoId"
+    }
+  },
   "acls": [],
   "methods": {}
 }

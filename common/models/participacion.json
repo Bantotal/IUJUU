@@ -1,5 +1,5 @@
 {
-  "name": "regaloParticipante",
+  "name": "participacion",
   "base": "PersistedModel",
   "strict": false,
   "idInjection": false,
@@ -10,18 +10,6 @@
     "id": {
       "type": "string",
       "id": true
-    },
-    "idUsuario": {
-      "type": "string",
-      "required": true
-    },
-    "idRegalo": {
-      "type": "string",
-      "required": true
-    },
-    "idUsuarioCuenta": {
-      "type": "string",
-      "required": true
     },
     "importe": {
       "type": "string",
@@ -35,7 +23,23 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "usuario": {
+      "type": "hasOne",
+      "model": "usuario",
+      "foreignKey": "usuarioId"
+    },
+    "regalo": {
+      "type": "hasOne",
+      "model": "regalo",
+      "foreignKey": "regaloId"
+    },
+    "cuenta": {
+      "type": "hasOne",
+      "model": "cuenta",
+      "foreignKey": "cuentaId"
+    }
+  },
   "acls": [],
   "methods": {}
 }

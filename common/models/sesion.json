@@ -11,10 +11,6 @@
       "type": "string",
       "id": true
     },
-    "idUsuario": {
-      "type": "string",
-      "required": true
-    },
     "fechaHora": {
       "type": "date",
       "required": true
@@ -25,7 +21,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "usuarios": {
+      "type": "hasOne",
+      "model": "usuario",
+      "foreignKey": "usuarioId"
+    }
+  },
   "acls": [],
   "methods": {}
 }
