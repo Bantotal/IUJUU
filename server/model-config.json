@@ -14,7 +14,8 @@
     ]
   },
   "User": {
-    "dataSource": "db"
+    "dataSource": "db",
+    "public": false
   },
   "AccessToken": {
     "dataSource": "db",
@@ -45,12 +46,6 @@
     "$resolved": true
   },
   "cuenta": {
-    "dataSource": "db",
-    "public": false,
-    "$promise": {},
-    "$resolved": true
-  },
-  "sesion": {
     "dataSource": "db",
     "public": false,
     "$promise": {},

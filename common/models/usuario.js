@@ -10,7 +10,7 @@ module.exports = function(Usuario) {
 	Usuario.disableRemoteMethod("upsertWithWhere", true);
 	Usuario.disableRemoteMethod("replaceById", true);
 
-	Usuario.disableRemoteMethod("find", true);
+	Usuario.disableRemoteMethod("find", false);
 	Usuario.disableRemoteMethod("findById", true);
 	Usuario.disableRemoteMethod("findOne", true);
 	 

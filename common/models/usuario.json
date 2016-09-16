@@ -1,6 +1,6 @@
 {
   "name": "usuario",
-  "base": "PersistedModel",
+  "base": "User",
   "strict": true,
   "idInjection": false,
   "options": {
@@ -19,10 +19,6 @@
       "type": "string",
       "required": true
     },
-    "email": {
-      "type": "string",
-      "required": true
-    },
     "documento": {
       "type": "string"
     },
@@ -31,10 +27,6 @@
     },
     "avatar": {
       "type": "string"
-    },
-    "contrasena": {
-      "type": "string",
-      "required": true
     }
   },
   "validations": [],
@@ -55,6 +47,13 @@
       "foreignKey": "cuentaId"
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW"
+    }
+  ],
   "methods": {}
 }
