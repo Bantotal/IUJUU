@@ -225,6 +225,32 @@ module.exports = function(Usuario) {
 			});
 		});	
     }
+
+    Usuario.cuentaDePagoAlta = function(id, cuentaDePago, cb) {
+
+    	if(cuentaDePago.tipo !== 'GALICIA' && cuentaDePago.tipo !== 'TARJETA')
+    		cb({code: 1, error: 'Tipo de cuenta invalido'})
+
+		app.models.CuentaDePago.create(cuentaDePago, function(err, cuentaDePagoCreada) {
+			if (err)
+				return cb(err);
+
+			Usuario.findById(id, function(err,usuarioEncontrado){
+				if (err)
+					return cb(err);
+
+				var cuentasDePagoAsociadasUpdate = usuarioEncontrado.cuentasDePagoAsociadas || [];
+				cuentasDePagoAsociadasUpdate.push(cuentaDePagoCreada.id);
+
+			    usuarioEncontrado.updateAttributes({cuentasDePagoAsociadas: cuentasDePagoAsociadasUpdate}, function(err, update){
+					if (err)
+						return cb(err);
+
+					cb(null, cuentaDePagoCreada);
+			    })
+			});
+		});
+    }
      
     Usuario.remoteMethod(
         'regalos', 
@@ -283,6 +309,16 @@ module.exports = function(Usuario) {
           returns: {arg: 'cuentas', type: 'array'},
           http: {path: '/:id/cuentasDePago', verb: 'get'},
           description: 'Obtiene las cuentas de pago asociadas al usuario'
+        }
+    );
+
+    Usuario.remoteMethod(
+        'cuentasDePagoAlta', 
+        {
+          accepts: [{arg: 'id', type: 'string', required: true}, {arg: 'cuentaDePago', type: 'object', required: true}],
+          returns: {arg: 'cuentas', type: 'array'},
+          http: {path: '/:id/cuentasDePago', verb: 'post'},
+          description: 'Crea una nueva cuenta de pago para el usuario'
         }
     );
 
