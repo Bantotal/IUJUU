@@ -1,16 +1,12 @@
 {
   "name": "usuario",
+  "plural": "usuarios",
   "base": "User",
-  "strict": true,
-  "idInjection": false,
+  "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "id": {
-      "type": "string",
-      "id": true
-    },
     "nombre": {
       "type": "string",
       "required": true
@@ -27,33 +23,21 @@
     },
     "avatar": {
       "type": "string"
+    },
+    "regalosEnLosQueParticipa": {
+      "type": [
+        "string"
+      ]
+    },
+    "cuentasDePagoAsociadas": {
+      "type": [
+        "object"
+      ]
     }
   },
   "validations": [],
   "relations": {
-    "regalos": {
-      "type": "hasMany",
-      "model": "regalo",
-      "foreignKey": "regaloId"
-    },
-    "participacions": {
-      "type": "hasMany",
-      "model": "participacion",
-      "foreignKey": "participacionId"
-    },
-    "cuenta": {
-      "type": "hasMany",
-      "model": "cuenta",
-      "foreignKey": "cuentaId"
-    }
   },
-  "acls": [
-    {
-      "accessType": "*",
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW"
-    }
-  ],
+  "acls": [],
   "methods": {}
 }

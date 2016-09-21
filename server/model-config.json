@@ -35,38 +35,18 @@
   },
   "usuario": {
     "dataSource": "db",
-    "public": true,
-    "$promise": {},
-    "$resolved": false
-  },
-  "metodoDePago": {
-    "dataSource": "db",
-    "public": true,
-    "$promise": {},
-    "$resolved": true
-  },
-  "cuenta": {
-    "dataSource": "db",
-    "public": false,
-    "$promise": {},
-    "$resolved": true
-  },
-  "motivo": {
-    "dataSource": "db",
-    "public": true,
-    "$promise": {},
-    "$resolved": true
+    "public": true
   },
   "regalo": {
     "dataSource": "db",
-    "public": false,
-    "$promise": {},
-    "$resolved": true
+    "public": true
   },
-  "participacion": {
+  "pago": {
     "dataSource": "db",
-    "public": false,
-    "$promise": {},
-    "$resolved": true
+    "public": true
+  },
+  "cuentaDePago": {
+    "dataSource": "db",
+    "public": true
   }
 }

@@ -1,20 +1,12 @@
 {
-  "name": "metodoDePago",
+  "name": "cuentaDePago",
+  "plural": "cuentasDePAgo",
   "base": "PersistedModel",
-  "strict": false,
-  "idInjection": false,
+  "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "id": {
-      "type": "string",
-      "id": true
-    },
-    "descripcion": {
-      "type": "string",
-      "required": true
-    },
     "tipo": {
       "type": "string",
       "required": true
