@@ -197,6 +197,34 @@ module.exports = function(Usuario) {
 
 		});
     }
+
+    Usuario.cuentasDePago = function(id, cb) {
+
+    	var respuesta = [];
+
+    	Usuario.findById(id, function(err, usuarioEncontrado) {
+			if (err)
+				return cb(err);
+
+			async.each(usuarioEncontrado.cuentasDePagoAsociadas, function(cuentaDePago, callback) {
+				app.models.CuentaDePago.findById(cuentaDePago, function(err, cuentaDePagoEncontrada) {
+					if (err)
+						return callback(err);		
+
+					respuesta.push(cuentaDePagoEncontrada);
+					callback();			
+				})
+
+			}, function(err){
+			    // if any of the file processing produced an error, err would equal that error
+			    if( err ) {
+			      return cb(err);
+			    } else {
+			      return cb(null, respuesta);
+			    }
+			});
+		});	
+    }
      
     Usuario.remoteMethod(
         'regalos', 
@@ -245,6 +273,16 @@ module.exports = function(Usuario) {
           returns: {arg: 'pago', type: 'object'},
           http: {path: '/:id/regalos/:regaloId/pagar', verb: 'post'},
           description: 'Hace un pago y deja un comentario en un regalo'
+        }
+    );
+
+    Usuario.remoteMethod(
+        'cuentasDePago', 
+        {
+          accepts: [{arg: 'id', type: 'string', required: true}],
+          returns: {arg: 'cuentas', type: 'array'},
+          http: {path: '/:id/cuentasDePago', verb: 'get'},
+          description: 'Obtiene las cuentas de pago asociadas al usuario'
         }
     );
 
