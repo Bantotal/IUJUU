@@ -33,7 +33,7 @@
     },
     "saldo": {
       "type": "number",
-      "required": true
+      "default": 0
     },
     "imagen": {
       "type": "string"
@@ -60,6 +60,19 @@
   },
   "validations": [],
   "relations": {},
-  "acls": [],
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW"
+    }
+  ],
   "methods": {}
 }

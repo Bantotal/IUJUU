@@ -43,10 +43,10 @@
   },
   "pago": {
     "dataSource": "db",
-    "public": true
+    "public": false
   },
   "cuentaDePago": {
     "dataSource": "db",
-    "public": true
+    "public": false
   }
 }

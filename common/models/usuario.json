@@ -18,15 +18,12 @@
     "documento": {
       "type": "string"
     },
-    "fechaDeNacimiento": {
-      "type": "date"
-    },
     "avatar": {
       "type": "string"
     },
     "regalosEnLosQueParticipa": {
       "type": [
-        "string"
+        "object"
       ]
     },
     "cuentasDePagoAsociadas": {
@@ -36,8 +33,14 @@
     }
   },
   "validations": [],
-  "relations": {
-  },
-  "acls": [],
+  "relations": {},
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW"
+    }
+  ],
   "methods": {}
 }

@@ -15,9 +15,19 @@
       "type": "string",
       "required": true
     },
+    "usuarioId": {
+      "type": "string",
+      "required": true
+    },
     "importe": {
       "type": "number",
       "required": true
+    },
+    "comentario": {
+      "type": "string"
+    },
+    "foto": {
+      "type": "string"
     }
   },
   "validations": [],
