@@ -99,7 +99,8 @@ module.exports = function(app, cb) {
 					imagen: 'fdfsfsdfsdf',
 					participantes: ['1', '3'],
 					pagos: ['1','2'],
-					activo: true 
+					activo: true,
+					cuentaId: 1 
 				},
 				{ 
 					usuarioAdministradorId: '2', 
@@ -118,7 +119,8 @@ module.exports = function(app, cb) {
 					imagen: 'fdfsfsdfsdf',
 					participantes: ['2', '1'],
 					pagos: ['3'],
-					activo: true 
+					activo: true,
+					cuentaId: 2
 				},
 				{ 
 					usuarioAdministradorId: '3', 
@@ -137,7 +139,8 @@ module.exports = function(app, cb) {
 					imagen: 'fdfsfsdfsdf',
 					participantes: ['3', '2'],
 					pagos: ['4'],
-					activo: true 
+					activo: true,
+					cuentaId: 3  
 				}
 			];
 

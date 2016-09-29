@@ -31,6 +31,10 @@
       "type": "number",
       "required": true
     },
+    "cuentaId": {
+      "type": "string",
+      "required": true
+    },
     "saldo": {
       "type": "number",
       "default": 0
