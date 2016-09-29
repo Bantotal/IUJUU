@@ -42,7 +42,7 @@ module.exports = function(Usuario) {
 			if (err)
 				return cb(err);
 
-			if(!usuarioEncontrado.hasOwnProperty('regalosEnLosQueParticipa')){
+			if(usuarioEncontrado.hasOwnProperty('regalosEnLosQueParticipa')){
 				return cb(null, respuesta);
 			}
 
@@ -77,7 +77,7 @@ module.exports = function(Usuario) {
 			if (err)
 				return cb(err);
 
-			if(!usuarioEncontrado.hasOwnProperty('regalosEnLosQueParticipa')){
+			if(usuarioEncontrado.hasOwnProperty('regalosEnLosQueParticipa')){
 				return cb(null, respuesta);
 			}
 
@@ -210,7 +210,7 @@ module.exports = function(Usuario) {
 
     Usuario.regalosCerrar = function(id, regaloId, email, cb) {
 
-    	function modificoRegalo(pagoCreado) {
+    	function modificoRegalo() {
 	 		app.models.Regalo.findById(regaloId, function(err, regaloEncontrado){
 				if (err)
 					return cb(err);
@@ -224,7 +224,7 @@ module.exports = function(Usuario) {
 			});   		
     	}
 
-		modificoRegalo(pagoCreado)
+		modificoRegalo();
 
     }
      
@@ -281,7 +281,7 @@ module.exports = function(Usuario) {
     Usuario.remoteMethod(
         'regalosCerrar', 
         {
-          accepts: [{arg: 'id', type: 'string', required: true}, {arg: 'regaloId', type: 'string', required: true}, {arg: 'email', type: 'email', required: true}],
+          accepts: [{arg: 'id', type: 'string', required: true}, {arg: 'regaloId', type: 'string', required: true}, {arg: 'email', type: 'string', required: true}],
           returns: {arg: 'close', type: 'boolean'},
           http: {path: '/:id/regalos/:regaloId/cerrar', verb: 'post'},
           description: 'Cierra una colecta'

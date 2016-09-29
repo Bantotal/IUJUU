@@ -1,5 +1,7 @@
 'use strict';
 
+var randomstring = require("randomstring");
+
 module.exports = function(Regalo) {
 
 	Regalo.disableRemoteMethod("create", true);
@@ -21,5 +23,17 @@ module.exports = function(Regalo) {
 	Regalo.disableRemoteMethod("confirm", true);
 	Regalo.disableRemoteMethod("count", true);
 	Regalo.disableRemoteMethod("exists", true);
+
+	Regalo.beforeCreate = function(next, modelInstance) {
+		  
+		var codigo = randomstring.generate({
+		  length: 5,
+		  charset: 'alphanumeric',
+		  capitalization: 'uppercase'
+		});
+
+		modelInstance.codigo = codigo;
+		next();
+	};
 
 };
