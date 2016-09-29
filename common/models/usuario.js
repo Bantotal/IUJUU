@@ -207,6 +207,26 @@ module.exports = function(Usuario) {
 
 		});
     }
+
+    Usuario.regalosCerrar = function(id, regaloId, email, cb) {
+
+    	function modificoRegalo(pagoCreado) {
+	 		app.models.Regalo.findById(regaloId, function(err, regaloEncontrado){
+				if (err)
+					return cb(err);
+
+			    regaloEncontrado.updateAttributes({ activo: false }, function(err, update){
+					if (err)
+						return cb(err);
+
+					cb(null, true);
+			    })
+			});   		
+    	}
+
+		modificoRegalo(pagoCreado)
+
+    }
      
     Usuario.remoteMethod(
         'regalos', 
@@ -255,6 +275,16 @@ module.exports = function(Usuario) {
           returns: {arg: 'pago', type: 'object'},
           http: {path: '/:id/regalos/:regaloId/pagar', verb: 'post'},
           description: 'Hace un pago y deja un comentario en un regalo'
+        }
+    );
+
+    Usuario.remoteMethod(
+        'regalosCerrar', 
+        {
+          accepts: [{arg: 'id', type: 'string', required: true}, {arg: 'regaloId', type: 'string', required: true}, {arg: 'email', type: 'email', required: true}],
+          returns: {arg: 'close', type: 'boolean'},
+          http: {path: '/:id/regalos/:regaloId/cerrar', verb: 'post'},
+          description: 'Cierra una colecta'
         }
     );
 
