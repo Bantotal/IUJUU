@@ -32,7 +32,6 @@ module.exports = function(Usuario) {
 	Usuario.disableRemoteMethod('__get__accessTokens', false);
 	Usuario.disableRemoteMethod('__updateById__accessTokens', false);
 
-
     Usuario.regalos = function(id, cb) {
 
     	var respuesta = [];
@@ -234,7 +233,7 @@ module.exports = function(Usuario) {
 		modificoRegalo();
 
     }
-     
+
     Usuario.remoteMethod(
         'regalos', 
         {
