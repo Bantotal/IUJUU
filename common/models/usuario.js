@@ -185,7 +185,9 @@ module.exports = function(Usuario) {
 				var pagos = regaloEncontrado.pagos || [];
 				pagos.push(pagoCreado.id);
 
-			    regaloEncontrado.updateAttributes({pagos: pagos}, function(err, update){
+				var nuevoSaldo = regaloEncontrado.saldo + pago.importe;
+
+			    regaloEncontrado.updateAttributes({ pagos: pagos, saldo: nuevoSaldo }, function(err, update){
 					if (err)
 						return cb(err);
 
