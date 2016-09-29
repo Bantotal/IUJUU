@@ -136,43 +136,50 @@ module.exports = function(Usuario) {
 		});
     }
 
-    Usuario.regalosUnirse = function(id, regaloId, cb) {
+    Usuario.regalosUnirse = function(id, regaloCodigo, cb) {
+    	function modificoRegalo(regalo) {
+			var participantes = regalo.participantes || [];
+			participantes.push(id);
 
-    	function modificoRegalo() {
-	 		app.models.Regalo.findById(regaloId, function(err, regaloEncontrado){
+		    regalo.updateAttributes({participantes: participantes}, function(err, update){
 				if (err)
 					return cb(err);
 
-				var participantes = regaloEncontrado.participantes || [];
-				participantes.push(id);
+				cb(null, true);
+		    })  		
+    	}
 
-			    regaloEncontrado.updateAttributes({participantes: participantes}, function(err, update){
+    	function modificarUsuario(regalo) {
+			Usuario.findById(id, function(err, usuarioEncontrado){
+				if (err)
+					return cb(err);
+				var participa = {
+					id: regalo.id,
+					esAdministrador: false,
+					pago: false						
+				}
+				var participacionesUpdate = usuarioEncontrado.regalosEnLosQueParticipa || [];
+				participacionesUpdate.push(participa);
+
+			    usuarioEncontrado.updateAttributes({regalosEnLosQueParticipa: participacionesUpdate}, function(err, update){
 					if (err)
 						return cb(err);
 
-					cb(null, true);
+					modificoRegalo(regalo)
 			    })
-			});   		
+			});
     	}
 
-		Usuario.findById(id, function(err,usuarioEncontrado){
+ 		app.models.Regalo.find({ where: {codigo:regaloCodigo} }, function(err, regaloEncontrado){
 			if (err)
 				return cb(err);
-			var participa = {
-				id: regaloId,
-				esAdministrador: false,
-				pago: false						
-			}
-			var participacionesUpdate = usuarioEncontrado.regalosEnLosQueParticipa || [];
-			participacionesUpdate.push(participa);
 
-		    usuarioEncontrado.updateAttributes({regalosEnLosQueParticipa: participacionesUpdate}, function(err, update){
-				if (err)
-					return cb(err);
+			if(regaloEncontrado[0] === undefined)
+				return cb('Código incorrecto');
 
-				modificoRegalo()
-		    })
-		});
+			modificarUsuario(regaloEncontrado[0]);
+		}); 
+
     }
 
     Usuario.regalosPago = function(id, regaloId, pago, cb) {
@@ -261,9 +268,9 @@ module.exports = function(Usuario) {
     Usuario.remoteMethod(
         'regalosUnirse', 
         {
-          accepts: [{arg: 'id', type: 'string', required: true}, {arg: 'regaloId', type: 'string', required: true}],
+          accepts: [{arg: 'id', type: 'string', required: true}, {arg: 'regaloCodigo', type: 'string', required: true}],
           returns: {arg: 'unido', type: 'boolean'},
-          http: {path: '/:id/regalos/:regaloId/unirme', verb: 'post'},
+          http: {path: '/:id/regalos/:regaloCodigo/unirme', verb: 'post'},
           description: 'Se une a un regalo al que fue invitado'
         }
     );
