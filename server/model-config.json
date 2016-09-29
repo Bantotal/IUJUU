@@ -44,9 +44,5 @@
   "pago": {
     "dataSource": "db",
     "public": false
-  },
-  "cuentaDePago": {
-    "dataSource": "db",
-    "public": false
   }
 }

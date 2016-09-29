@@ -11,8 +11,7 @@ module.exports = function(app, cb) {
 			var usuarios = [
 				{ 
 					nombre: 'Martin', 
-					apellido: 'Varela', 
-					documento: '12345678',
+					apellido: 'Varela',
 					avatar: 'adasdasdadwrg',
 					email: 'mvarela@iujuu.com', 
 					password: '1234',
@@ -26,13 +25,11 @@ module.exports = function(app, cb) {
 				      id: '2',
 				      esAdministrador: false,
 				      pago: false						
-					}],
-					cuentasDePagoAsociadas: ['1', '2']
+					}]
 				},
 				{ 
 					nombre: 'Santiago', 
-					apellido: 'Ravera', 
-					documento: '12345678',
+					apellido: 'Ravera',
 					avatar: 'dsfdsfsdf',
 					email: 'sravera@iujuu.com', 
 					password: '1234',
@@ -46,14 +43,12 @@ module.exports = function(app, cb) {
 				      id: '3',
 				      esAdministrador: false,
 				      pago: true						
-					}],
-					cuentasDePagoAsociadas: ['3']
+					}]
 				},
 				{ 
 					nombre: 'Marcos', 
 					apellido: 'Begerez', 
 					documento: '12345678',
-					avatar: 'dsfdsfsdf',
 					email: 'mbegerez@iujuu.com', 
 					password: '1234',
 					regalosEnLosQueParticipa: [
@@ -66,8 +61,7 @@ module.exports = function(app, cb) {
 				      id: '1',
 				      esAdministrador: false,
 				      pago: true						
-					}],
-					cuentasDePagoAsociadas: ['4']
+					}]
 				}
 			];
 
@@ -162,32 +156,28 @@ module.exports = function(app, cb) {
 	    function(callback) {
 			var pagos = [
 				{ 
-					regaloId: '1', 
-					cuentaDePagoId: '1', 
+					regaloId: '1',
 					usuarioId: '1', 
 					importe: 100, 
 					comentario: 'Feliz cumple Vale :)', 
 					foto: 'dfdsjfhsdkhf'
 				},
 				{ 
-					regaloId: '1', 
-					cuentaDePagoId: '3', 
+					regaloId: '1',
 					usuarioId: '2', 
 					importe: 100, 
 					comentario: 'Feliz cumpleeee !!', 
 					foto: 'dfdsjfhsdkhf'
 				},
 				{ 
-					regaloId: '2', 
-					cuentaDePagoId: '4', 
+					regaloId: '2',
 					usuarioId: '3', 
 					importe: 200, 
 					comentario: 'Te queremos, buen viaje!', 
 					foto: 'dfdsjfhsdkhf'
 				},
 				{ 
-					regaloId: '3', 
-					cuentaDePagoId: '3', 
+					regaloId: '3',
 					usuarioId: '2', 
 					importe: 500, 
 					comentario: 'Felicidades Amigo, mucha suerte', 
@@ -203,38 +193,6 @@ module.exports = function(app, cb) {
 				console.log('Agrega `pagos` desde boot script:', pagosRespuesta);
 
 				callback(null, 'pago');
-			});
-	    },
-
-	    // ------- ALTA DE CUENTAS DE PAGOS ------- //
-	    function(callback) {
-			var cuentas = [
-				{ 
-					tipo: 'GALICIA', 
-					descripcion: 'Cuenta sueldo'
-				},
-				{ 
-					tipo: 'TARJETA', 
-					descripcion: 'Tarjeta de crédito'
-				},
-				{ 
-					tipo: 'GALICIA', 
-					descripcion: 'Cuenta regalos'
-				},
-				{ 
-					tipo: 'GALICIA', 
-					descripcion: 'Cuenta regalos'
-				}
-			];
-
-
-			app.models.CuentaDePago.create(cuentas, function(err, cuentasRespuesta) {
-				if (err)
-					return cb(err);
-
-				console.log('Agrega `cuentas` desde boot script:', cuentasRespuesta);
-
-				callback(null, 'cuenta');
 			});
 	    },
 

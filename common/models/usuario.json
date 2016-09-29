@@ -15,21 +15,14 @@
       "type": "string",
       "required": true
     },
-    "documento": {
-      "type": "string"
-    },
     "avatar": {
       "type": "string"
     },
     "regalosEnLosQueParticipa": {
       "type": [
         "object"
-      ]
-    },
-    "cuentasDePagoAsociadas": {
-      "type": [
-        "object"
-      ]
+      ],
+      "default": []
     }
   },
   "validations": [],

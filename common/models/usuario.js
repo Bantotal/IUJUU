@@ -14,7 +14,7 @@ module.exports = function(Usuario) {
 	Usuario.disableRemoteMethod("replaceById", true);
 
 	Usuario.disableRemoteMethod("find", true);
-	Usuario.disableRemoteMethod("findById", true);
+	Usuario.disableRemoteMethod("findById", false);
 	Usuario.disableRemoteMethod("findOne", true);
 	 
 	Usuario.disableRemoteMethod("deleteById", true);
@@ -41,6 +41,10 @@ module.exports = function(Usuario) {
     	Usuario.findById(id, function(err, usuarioEncontrado) {
 			if (err)
 				return cb(err);
+
+			if(!usuarioEncontrado.hasOwnProperty('regalosEnLosQueParticipa')){
+				return cb(null, respuesta);
+			}
 
 			async.each(usuarioEncontrado.regalosEnLosQueParticipa, function(regalo, callback) {
 				app.models.Regalo.findById(regalo.id, function(err, regaloEncontrado) {
@@ -72,6 +76,10 @@ module.exports = function(Usuario) {
     	Usuario.findById(id, function(err, usuarioEncontrado) {
 			if (err)
 				return cb(err);
+
+			if(!usuarioEncontrado.hasOwnProperty('regalosEnLosQueParticipa')){
+				return cb(null, respuesta);
+			}
 
 			async.each(usuarioEncontrado.regalosEnLosQueParticipa, function(regalo, callback) {
 				if(regalo.id == regaloId){
@@ -197,60 +205,6 @@ module.exports = function(Usuario) {
 
 		});
     }
-
-    Usuario.cuentasDePago = function(id, cb) {
-
-    	var respuesta = [];
-
-    	Usuario.findById(id, function(err, usuarioEncontrado) {
-			if (err)
-				return cb(err);
-
-			async.each(usuarioEncontrado.cuentasDePagoAsociadas, function(cuentaDePago, callback) {
-				app.models.CuentaDePago.findById(cuentaDePago, function(err, cuentaDePagoEncontrada) {
-					if (err)
-						return callback(err);		
-
-					respuesta.push(cuentaDePagoEncontrada);
-					callback();			
-				})
-
-			}, function(err){
-			    // if any of the file processing produced an error, err would equal that error
-			    if( err ) {
-			      return cb(err);
-			    } else {
-			      return cb(null, respuesta);
-			    }
-			});
-		});	
-    }
-
-    Usuario.cuentaDePagoAlta = function(id, cuentaDePago, cb) {
-
-    	if(cuentaDePago.tipo !== 'GALICIA' && cuentaDePago.tipo !== 'TARJETA')
-    		cb({code: 1, error: 'Tipo de cuenta invalido'})
-
-		app.models.CuentaDePago.create(cuentaDePago, function(err, cuentaDePagoCreada) {
-			if (err)
-				return cb(err);
-
-			Usuario.findById(id, function(err,usuarioEncontrado){
-				if (err)
-					return cb(err);
-
-				var cuentasDePagoAsociadasUpdate = usuarioEncontrado.cuentasDePagoAsociadas || [];
-				cuentasDePagoAsociadasUpdate.push(cuentaDePagoCreada.id);
-
-			    usuarioEncontrado.updateAttributes({cuentasDePagoAsociadas: cuentasDePagoAsociadasUpdate}, function(err, update){
-					if (err)
-						return cb(err);
-
-					cb(null, cuentaDePagoCreada);
-			    })
-			});
-		});
-    }
      
     Usuario.remoteMethod(
         'regalos', 
@@ -299,26 +253,6 @@ module.exports = function(Usuario) {
           returns: {arg: 'pago', type: 'object'},
           http: {path: '/:id/regalos/:regaloId/pagar', verb: 'post'},
           description: 'Hace un pago y deja un comentario en un regalo'
-        }
-    );
-
-    Usuario.remoteMethod(
-        'cuentasDePago', 
-        {
-          accepts: [{arg: 'id', type: 'string', required: true}],
-          returns: {arg: 'cuentas', type: 'array'},
-          http: {path: '/:id/cuentasDePago', verb: 'get'},
-          description: 'Obtiene las cuentas de pago asociadas al usuario'
-        }
-    );
-
-    Usuario.remoteMethod(
-        'cuentasDePagoAlta', 
-        {
-          accepts: [{arg: 'id', type: 'string', required: true}, {arg: 'cuentaDePago', type: 'object', required: true}],
-          returns: {arg: 'cuentas', type: 'array'},
-          http: {path: '/:id/cuentasDePago', verb: 'post'},
-          description: 'Crea una nueva cuenta de pago para el usuario'
         }
     );
 

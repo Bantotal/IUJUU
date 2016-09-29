@@ -11,10 +11,6 @@
       "type": "string",
       "required": true
     },
-    "cuentaDePagoId": {
-      "type": "string",
-      "required": true
-    },
     "usuarioId": {
       "type": "string",
       "required": true
