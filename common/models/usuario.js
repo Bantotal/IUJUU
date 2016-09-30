@@ -181,6 +181,45 @@ module.exports = function(Usuario) {
 
     }
 
+    Usuario.regalosVoto = function(id, regaloId, voto, cb) {
+ 		app.models.Regalo.findById(regaloId, function(err, regaloEncontrado){
+			if (err)
+				return cb(err);
+
+			var regalosSugeridos = [];
+			var encontro = false;
+			async.each(regaloEncontrado.regalosSugeridos, function(item, callback) {
+
+			  if(item.decsripcion.toLowerCase() === voto.toLowerCase()) {
+			    item.votos += 1;
+			    regalosSugeridos.push(item);
+			    encontro = true;
+			    callback();
+			  } else {
+			    regalosSugeridos.push(item);
+			    callback();
+			  }
+			}, function(err){
+			    // if any of the file processing produced an error, err would equal that error
+			    if( err ) {
+			      return cb(err);
+			    } else {
+					if(!encontro) {
+						var nuevoItem = { decsripcion: voto, votos: 1 }
+						regalosSugeridos.push(nuevoItem);
+					}
+					regaloEncontrado.updateAttributes({ regalosSugeridos: regalosSugeridos }, function(err, update){
+						if (err)
+							return cb(err);
+
+						cb(null, regalosSugeridos);
+					})	
+			    }
+			});
+		});   		
+    	
+    }
+
     Usuario.regalosPago = function(id, regaloId, pago, cb) {
 
     	function modificoRegalo(pagoCreado) {
@@ -281,6 +320,16 @@ module.exports = function(Usuario) {
           returns: {arg: 'pago', type: 'object'},
           http: {path: '/:id/regalos/:regaloId/pagar', verb: 'post'},
           description: 'Hace un pago y deja un comentario en un regalo'
+        }
+    );
+
+    Usuario.remoteMethod(
+        'regalosVoto', 
+        {
+          accepts: [{arg: 'id', type: 'string', required: true}, {arg: 'regaloId', type: 'string', required: true}, {arg: 'voto', type: 'String', required: true}],
+          returns: {arg: 'regalosSugeridos', type: 'array'},
+          http: {path: '/:id/regalos/:regaloId/votar', verb: 'post'},
+          description: 'Agrega una nueva sugerencia de regalo o vota por alguna existente'
         }
     );
 
