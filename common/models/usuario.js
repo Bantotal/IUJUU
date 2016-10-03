@@ -7,7 +7,7 @@ module.exports = function(Usuario) {
 	Usuario.disableRemoteMethod("create", false);
 	Usuario.disableRemoteMethod("upsert", true);
 	Usuario.disableRemoteMethod("updateAll", true);
-	Usuario.disableRemoteMethod("updateAttributes", false);
+	Usuario.disableRemoteMethod("updateAttributes", true);
 	Usuario.disableRemoteMethod("createChangeStream", true);
 	Usuario.disableRemoteMethod("replaceOrCreate", true);
 	Usuario.disableRemoteMethod("upsertWithWhere", true);

@@ -88,11 +88,11 @@ module.exports = function(app, cb) {
 					saldo: 200, 
 					regalosSugeridos: [
 						{ 
-							decsripcion: 'Jean', 
+							descripcion: 'Jean', 
 						  	votos: 1
 						}, 
 						{ 
-							decsripcion: 'Cartera', 
+							descripcion: 'Cartera', 
 						  	votos: 1
 						}
 					], 
@@ -112,7 +112,7 @@ module.exports = function(app, cb) {
 					saldo: 200, 
 					regalosSugeridos: [
 						{ 
-							decsripcion: 'Guitarra', 
+							descripcion: 'Guitarra', 
 						  	votos: 2
 						}
 					], 
@@ -132,7 +132,7 @@ module.exports = function(app, cb) {
 					saldo: 500, 
 					regalosSugeridos: [
 						{ 
-							decsripcion: 'Viaje', 
+							descripcion: 'Viaje', 
 						  	votos: 1
 						}
 					], 
