@@ -67,7 +67,8 @@ module.exports = function(Usuario) {
 			});
 		});	
     }
-
+		
+		
     Usuario.regaloId = function(id, regaloId, cb) {
 
     	var regaloItem = {};
@@ -273,6 +274,92 @@ module.exports = function(Usuario) {
 
     }
 
+		Usuario.VerifyRegalo = function(id, codigo, cb) {
+				app.models.Regalo.find({ where: {codigo:codigo} }, function(err, regaloEncontrado){
+					if (err)
+						return cb(err);
+
+				
+					return cb(null, regaloEncontrado);
+				});
+
+		}
+		
+		Usuario.regaloUpdate = function(id, descripcion, montoObjetivo, montoPorPersona, fechaDeCierre, cb) {
+				function ActualizoRegalo() {
+						app.models.Regalo.findById(regaloId, function(err, regaloEncontrado){
+							if (err)
+								return cb(err);
+
+								if (!descripcion && !montoObjetivo && !montoPorPersona && !fechaDeCierre)
+									return cb(null, false);
+								
+									
+								var atts ={};
+								if(descripcion)
+									atts.descripcion = descripcion;
+								
+								if(montoObjetivo)
+									atts.montoObjetivo = montoObjetivo;
+								
+								if(montoPorPersona)
+									atts.montoPorPersona = montoPorPersona;
+								
+								if(fechaDeCierre)
+									atts.fechaDeCierre = fechaDeCierre;
+								
+
+
+								regaloEncontrado.updateAttributes(atts, function(err, update){
+								if (err)
+									return cb(err);
+
+								cb(null, true);
+								})
+						});   		
+					
+			  }
+
+
+
+
+		}
+		Usuario.userUpdate = function(id, nombre, apellido, telefono, FechaNacimiento, cb) {
+			 function actualizoUser() {
+						Usuario.findById(id, function(err, usuarioEncontrado) {
+								if (err)
+									return cb(err);
+								
+								if (!nombre && !apellido && !telefono && !FechaNacimiento)
+									return cb(null, false);
+								
+									
+								var att ={};
+								if(nombre)
+									att.nombre = nombre;
+								
+								if(apellido)
+									att.apellido = apellido;
+								
+								if(telefono)
+									att.telefono = telefono;
+								
+								if(FechaNacimiento)
+									att.FechaNacimiento = FechaNacimiento;
+								
+
+								usuarioEncontrado.updateAttributes(att, function(err, update){
+									if (err)
+										return cb(err);
+
+									cb(null, true);
+									})
+						}); 
+			 }  
+			 actualizoUser();
+
+		}
+
     Usuario.remoteMethod(
         'regalos', 
         {
@@ -340,6 +427,35 @@ module.exports = function(Usuario) {
           returns: {arg: 'close', type: 'boolean'},
           http: {path: '/:id/regalos/:regaloId/cerrar', verb: 'post'},
           description: 'Cierra una colecta'
+        }
+    );
+		Usuario.remoteMethod(
+        'regaloUpdate', 
+        {
+          accepts: [{arg: 'id', type: 'string', required: true}, {arg: 'descripcion', type: 'string', required: false}, {arg: 'montoObjetivo', type: 'number', required: false}, {arg: 'montoPorPersona', type: 'number', required: false},{arg: 'fechaDeCierre', type: 'date', required: false}],
+          returns: {arg: 'Updated', type: 'boolean'},
+          http: {path: '/:id/regalos/:regaloId/actualizar', verb: 'post'},
+          description: 'Actualiza una colecta'
+        }
+    );
+
+		Usuario.remoteMethod(
+        'userUpdate', 
+        {
+          accepts: [{arg: 'id', type: 'string', required: true},{arg: 'nombre', type: 'string', required: false},{arg: 'apellido', type: 'string', required: false},{arg: 'telefono', type: 'string', required: false},{arg: 'FechaNacimiento', type: 'date', required: false}],
+          returns: {arg: 'Updated', type: 'boolean'},
+          http: {path: '/:id/update', verb: 'post'},
+          description: 'Actualiza Usuario'
+        }
+    );
+
+		Usuario.remoteMethod(
+        'VerifyRegalo', 
+        {
+          accepts: [{arg: 'id', type: 'string', required: true}, {arg: 'codigo', type: 'string', required: true}],
+          returns: {arg: 'regalo', type: 'object'},
+          http: {path: '/:id/regalos/:codigo', verb: 'get'},
+          description: 'Obtiene un regalo por codigo'
         }
     );
 

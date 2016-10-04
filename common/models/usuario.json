@@ -15,6 +15,14 @@
       "type": "string",
       "required": true
     },
+    "telefono": {
+      "type": "string",
+      "required": false
+    },
+    "FechaNacimiento": {
+      "type": "date",
+      "required": false
+    },
     "avatar": {
       "type": "string"
     },
