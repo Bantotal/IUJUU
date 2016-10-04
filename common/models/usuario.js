@@ -274,18 +274,8 @@ module.exports = function(Usuario) {
 
     }
 
-		Usuario.VerifyRegalo = function(id, codigo, cb) {
-				app.models.Regalo.find({ where: {codigo:codigo} }, function(err, regaloEncontrado){
-					if (err)
-						return cb(err);
 
-				
-					return cb(null, regaloEncontrado);
-				});
-
-		}
-		
-		Usuario.regaloUpdate = function(id, descripcion, montoObjetivo, montoPorPersona, fechaDeCierre, cb) {
+		Usuario.regaloUpdate = function(id,regaloId, descripcion, montoObjetivo, montoPorPersona, fechaDeCierre, cb) {
 				function ActualizoRegalo() {
 						app.models.Regalo.findById(regaloId, function(err, regaloEncontrado){
 							if (err)
@@ -432,7 +422,7 @@ module.exports = function(Usuario) {
 		Usuario.remoteMethod(
         'regaloUpdate', 
         {
-          accepts: [{arg: 'id', type: 'string', required: true}, {arg: 'descripcion', type: 'string', required: false}, {arg: 'montoObjetivo', type: 'number', required: false}, {arg: 'montoPorPersona', type: 'number', required: false},{arg: 'fechaDeCierre', type: 'date', required: false}],
+          accepts: [{arg: 'id', type: 'string', required: true},{arg: 'regaloId', type: 'string', required: true}, {arg: 'descripcion', type: 'string', required: false}, {arg: 'montoObjetivo', type: 'number', required: false}, {arg: 'montoPorPersona', type: 'number', required: false},{arg: 'fechaDeCierre', type: 'date', required: false}],
           returns: {arg: 'Updated', type: 'boolean'},
           http: {path: '/:id/regalos/:regaloId/actualizar', verb: 'post'},
           description: 'Actualiza una colecta'
@@ -449,14 +439,6 @@ module.exports = function(Usuario) {
         }
     );
 
-		Usuario.remoteMethod(
-        'VerifyRegalo', 
-        {
-          accepts: [{arg: 'id', type: 'string', required: true}, {arg: 'codigo', type: 'string', required: true}],
-          returns: {arg: 'regalo', type: 'object'},
-          http: {path: '/:id/regalos/:codigo', verb: 'get'},
-          description: 'Obtiene un regalo por codigo'
-        }
-    );
+		
 
 };
