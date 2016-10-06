@@ -37,12 +37,15 @@ module.exports = function(Regalo) {
 	};
 
 	Regalo.VerifyRegalo = function(codigo, cb) {
-		codigo = codigo.toUpperCase();
+		codigo = codigo.toUpperCase()
 		Regalo.find({ where: {codigo:codigo} }, function(err, regaloEncontrado){
 			if (err)
 				return cb(err);
 
-			return cb(null, regaloEncontrado);
+			if(regaloEncontrado[0] == undefined) 
+				return cb(null, {})
+			else
+				return cb(null, regaloEncontrado[0])
 		});
 	}
 
