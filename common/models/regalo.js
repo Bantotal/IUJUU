@@ -32,31 +32,27 @@ module.exports = function(Regalo) {
 		  capitalization: 'uppercase'
 		});
 
-		modelInstance.codigo = codigo;
+		modelInstance.codigo = codigo.toUpperCase();
 		next();
 	};
 
+	Regalo.VerifyRegalo = function(codigo, cb) {
+		codigo = codigo.toUpperCase()
+		Regalo.find({ where: { codigo: codigo } }, function(err, regaloEncontrado){
+			if (err)
+				return cb(err);
+			return cb(null, regaloEncontrado[0]);
+		});
+	}
 
-
-		Regalo.VerifyRegalo = function(codigo, cb) {
-				Regalo.find({ where: {codigo:codigo} }, function(err, regaloEncontrado){
-					if (err)
-						return cb(err);
-
-				
-					return cb(null, regaloEncontrado);
-				});
-
-		}
-
-		Regalo.remoteMethod(
-        'VerifyRegalo', 
-        {
-          accepts: [{arg: 'codigo', type: 'string', required: true}],
-          returns: {arg: 'regalo', type: 'object'},
-          http: {path: '/regalos/:codigo', verb: 'get'},
-          description: 'Obtiene un regalo por codigo'
-        }
+	Regalo.remoteMethod(
+	    'VerifyRegalo', 
+	    {
+	      accepts: [{arg: 'codigo', type: 'string', required: true}],
+	      returns: {arg: 'regalo', type: 'object'},
+	      http: {path: '/regalos/:codigo', verb: 'get'},
+	      description: 'Obtiene un regalo por codigo'
+	    }
     );
 
 };
