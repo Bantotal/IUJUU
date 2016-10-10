@@ -309,7 +309,7 @@ module.exports = function(Usuario) {
 						});   		
 					
 			  }
-
+				ActualizoRegalo();
 
 
 
