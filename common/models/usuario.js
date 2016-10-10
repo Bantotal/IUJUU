@@ -191,12 +191,12 @@ module.exports = function(Usuario) {
 			var encontro = false;
 			async.each(regaloEncontrado.regalosSugeridos, function(item, callback) {
 
-			  if(item.decsripcion == undefined){
+			  if(item.descripcion == undefined){
 			    regalosSugeridos.push(item);
 			    callback();
 			  }
 			  else{
-				if(item.decsripcion.toLowerCase() === voto.toLowerCase()) {
+				if(item.descripcion.toLowerCase() === voto.toLowerCase()) {
 					item.votos += 1;
 					regalosSugeridos.push(item);
 					encontro = true;
