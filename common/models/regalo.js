@@ -38,21 +38,25 @@ module.exports = function(Regalo) {
 
 	Regalo.VerifyRegalo = function(codigo, cb) {
 		codigo = codigo.toUpperCase()
-		Regalo.find({ where: { codigo: codigo } }, function(err, regaloEncontrado){
+		Regalo.find({ where: {codigo:codigo} }, function(err, regaloEncontrado){
 			if (err)
 				return cb(err);
-			return cb(null, regaloEncontrado[0]);
+
+			if(regaloEncontrado[0] == undefined) 
+				return cb(null, {})
+			else
+				return cb(null, regaloEncontrado[0])
 		});
 	}
 
 	Regalo.remoteMethod(
-	    'VerifyRegalo', 
-	    {
-	      accepts: [{arg: 'codigo', type: 'string', required: true}],
-	      returns: {arg: 'regalo', type: 'object'},
-	      http: {path: '/regalos/:codigo', verb: 'get'},
-	      description: 'Obtiene un regalo por codigo'
-	    }
+        'VerifyRegalo', 
+        {
+          accepts: [{arg: 'codigo', type: 'string', required: true}],
+          returns: {arg: 'regalo', type: 'object'},
+          http: {path: '/regalos/:codigo', verb: 'get'},
+          description: 'Obtiene un regalo por codigo'
+        }
     );
 
 };
