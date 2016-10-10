@@ -212,7 +212,7 @@ module.exports = function(Usuario) {
 			      return cb(err);
 			    } else {
 					if(!encontro) {
-						var nuevoItem = { decsripcion: voto, votos: 1 }
+						var nuevoItem = { descripcion: voto, votos: 1 }
 						regalosSugeridos.push(nuevoItem);
 					}
 					regaloEncontrado.updateAttributes({ regalosSugeridos: regalosSugeridos }, function(err, update){
