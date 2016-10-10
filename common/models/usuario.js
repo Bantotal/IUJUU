@@ -191,14 +191,20 @@ module.exports = function(Usuario) {
 			var encontro = false;
 			async.each(regaloEncontrado.regalosSugeridos, function(item, callback) {
 
-			  if(item.decsripcion.toLowerCase() === voto.toLowerCase()) {
-			    item.votos += 1;
-			    regalosSugeridos.push(item);
-			    encontro = true;
-			    callback();
-			  } else {
+			  if(item.decsripcion == undefined){
 			    regalosSugeridos.push(item);
 			    callback();
+			  }
+			  else{
+				if(item.decsripcion.toLowerCase() === voto.toLowerCase()) {
+					item.votos += 1;
+					regalosSugeridos.push(item);
+					encontro = true;
+					callback();
+				} else {
+					regalosSugeridos.push(item);
+					callback();
+				}
 			  }
 			}, function(err){
 			    // if any of the file processing produced an error, err would equal that error
@@ -277,36 +283,36 @@ module.exports = function(Usuario) {
 
 		Usuario.regaloUpdate = function(id,regaloId, descripcion, montoObjetivo, montoPorPersona, fechaDeCierre, cb) {
 				function ActualizoRegalo() {
-						app.models.Regalo.findById(regaloId, function(err, regaloEncontrado){
+					app.models.Regalo.findById(regaloId, function(err, regaloEncontrado){
+						if (err)
+							return cb(err);
+
+							if (!descripcion && !montoObjetivo && !montoPorPersona && !fechaDeCierre)
+								return cb("Descripcion, monto objetivo, monto por persona y fecha de cierre, son datos requeridos", false);
+							
+								
+							var atts ={};
+							if(descripcion)
+								atts.descripcion = descripcion;
+							
+							if(montoObjetivo)
+								atts.montoObjetivo = montoObjetivo;
+							
+							if(montoPorPersona)
+								atts.montoPorPersona = montoPorPersona;
+							
+							if(fechaDeCierre)
+								atts.fechaDeCierre = fechaDeCierre;
+							
+
+
+							regaloEncontrado.updateAttributes(atts, function(err, update){
 							if (err)
 								return cb(err);
 
-								if (!descripcion && !montoObjetivo && !montoPorPersona && !fechaDeCierre)
-									return cb(null, false);
-								
-									
-								var atts ={};
-								if(descripcion)
-									atts.descripcion = descripcion;
-								
-								if(montoObjetivo)
-									atts.montoObjetivo = montoObjetivo;
-								
-								if(montoPorPersona)
-									atts.montoPorPersona = montoPorPersona;
-								
-								if(fechaDeCierre)
-									atts.fechaDeCierre = fechaDeCierre;
-								
-
-
-								regaloEncontrado.updateAttributes(atts, function(err, update){
-								if (err)
-									return cb(err);
-
-								cb(null, true);
-								})
-						});   		
+							cb(null, true);
+							})
+					});   		
 					
 			  }
 				ActualizoRegalo();
@@ -316,35 +322,35 @@ module.exports = function(Usuario) {
 		}
 		Usuario.userUpdate = function(id, nombre, apellido, telefono, FechaNacimiento, cb) {
 			 function actualizoUser() {
-						Usuario.findById(id, function(err, usuarioEncontrado) {
-								if (err)
-									return cb(err);
-								
-								if (!nombre && !apellido && !telefono && !FechaNacimiento)
-									return cb(null, false);
-								
-									
-								var att ={};
-								if(nombre)
-									att.nombre = nombre;
-								
-								if(apellido)
-									att.apellido = apellido;
-								
-								if(telefono)
-									att.telefono = telefono;
-								
-								if(FechaNacimiento)
-									att.FechaNacimiento = FechaNacimiento;
-								
+				Usuario.findById(id, function(err, usuarioEncontrado) {
+						if (err)
+							return cb(err);
+						
+						if (!nombre && !apellido && !telefono && !FechaNacimiento)
+							return cb("Nombre, apellido, telefono y fecha de nacimiento, son datos requeridos.", false);
+						
+							
+						var att ={};
+						if(nombre)
+							att.nombre = nombre;
+						
+						if(apellido)
+							att.apellido = apellido;
+						
+						if(telefono)
+							att.telefono = telefono;
+						
+						if(FechaNacimiento)
+							att.FechaNacimiento = FechaNacimiento;
+						
 
-								usuarioEncontrado.updateAttributes(att, function(err, update){
-									if (err)
-										return cb(err);
+						usuarioEncontrado.updateAttributes(att, function(err, update){
+							if (err)
+								return cb(err);
 
-									cb(null, true);
-									})
-						}); 
+							cb(null, true);
+							})
+				}); 
 			 }  
 			 actualizoUser();
 
