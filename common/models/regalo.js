@@ -54,7 +54,7 @@ module.exports = function(Regalo) {
         {
           accepts: [{arg: 'codigo', type: 'string', required: true}],
           returns: {arg: 'regalo', type: 'object'},
-          http: {path: '/regalos/:codigo', verb: 'get'},
+          http: {path: '/regalos/codigo/:codigo', verb: 'get'},
           description: 'Obtiene un regalo por codigo'
         }
     );
