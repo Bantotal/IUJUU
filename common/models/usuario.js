@@ -109,7 +109,6 @@ module.exports = function(Usuario) {
 
     	regalo.usuarioAdministradorId = id;
     	regalo.participantes = [];
-    	regalo.participantes.push(id);
 
 		app.models.Regalo.create(regalo, function(err, regaloCreado) {
 			if (err)
