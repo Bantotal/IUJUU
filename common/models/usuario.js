@@ -243,7 +243,43 @@ module.exports = function(Usuario) {
 					if (err)
 						return cb(err);
 
-					cb(null, pagoCreado);
+					Usuario.findById(id, function(err,usuarioEncontrado){
+						if (err)
+							return cb(err);
+						var participa = {
+							id: regaloId,
+							esAdministrador: false,
+							pago: true						
+						}
+						var participacionesUpdate = usuarioEncontrado.regalosEnLosQueParticipa || [];
+						if(id == regaloEncontrado.administradorId){
+							async.each(participacionesUpdate, function(participacion, callback) {
+								if(participacion.esAdministrador){
+									participacion.pago = true
+								}
+							}, function(err){
+							    // if any of the file processing produced an error, err would equal that error
+							    if( err ) {
+							      return cb(err);
+							    } else {
+								    usuarioEncontrado.updateAttributes({regalosEnLosQueParticipa: participacionesUpdate}, function(err, update){
+										if (err)
+											return cb(err);
+
+										cb(null, pagoCreado);
+								    })
+							    }
+							});							
+						}else{
+							participacionesUpdate.push(participa);
+						    usuarioEncontrado.updateAttributes({regalosEnLosQueParticipa: participacionesUpdate}, function(err, update){
+								if (err)
+									return cb(err);
+
+								cb(null, pagoCreado);
+						    })
+						}
+					});
 			    })
 			});   		
     	}
