@@ -2,6 +2,10 @@
 var async = require('async');
 var app = require('../../server/server');
 
+function date_sort(a, b) {
+    return new Date(a.fechaDeCierre).getTime() - new Date(b.fechaDeCierre).getTime();
+}
+                    
 module.exports = function(Usuario) {
 
 	Usuario.disableRemoteMethod("create", false);
@@ -53,7 +57,10 @@ module.exports = function(Usuario) {
 					regaloItem = regaloEncontrado;
 					regaloItem.esAdministrador = regalo.esAdministrador;
 					regaloItem.pago = regalo.pago;
+                    if(regalo.activo){
 					respuesta.push(regaloItem);
+                    respuesta.sort(date_sort);
+                    }
 					callback();			
 				})
 
