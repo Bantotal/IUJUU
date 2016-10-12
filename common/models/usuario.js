@@ -57,11 +57,13 @@ module.exports = function(Usuario) {
 					regaloItem = regaloEncontrado;
 					regaloItem.esAdministrador = regalo.esAdministrador;
 					regaloItem.pago = regalo.pago;
-          if(regalo.activo){
-					  respuesta.push(regaloItem);
-            respuesta.sort(date_sort);
-            callback();	
-          }
+                    if(regaloItem.activo){
+                        respuesta.push(regaloItem);
+                        respuesta.sort(date_sort);
+                        callback();	
+                    }else{
+                        callback();	
+                    }
 				})
 
 			}, function(err){
