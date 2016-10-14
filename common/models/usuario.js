@@ -357,43 +357,45 @@ module.exports = function(Usuario) {
     }
 
 
-		Usuario.regaloUpdate = function(id,regaloId, descripcion, montoObjetivo, montoPorPersona, fechaDeCierre, cb) {
-				function ActualizoRegalo() {
-					app.models.Regalo.findById(regaloId, function(err, regaloEncontrado){
-						if (err)
-							return cb(err);
+	Usuario.regaloUpdate = function(id,regaloId, descripcion, montoObjetivo, montoPorPersona, fechaDeCierre, sugerencias, cb) {
+		function ActualizoRegalo() {
+			app.models.Regalo.findById(regaloId, function(err, regaloEncontrado){
+				if (err)
+					return cb(err);
 
-							if (!descripcion && !montoObjetivo && !montoPorPersona && !fechaDeCierre)
-								return cb("Descripcion, monto objetivo, monto por persona y fecha de cierre, son datos requeridos", false);
-							
-								
-							var atts ={};
-							if(descripcion)
-								atts.descripcion = descripcion;
-							
-							if(montoObjetivo)
-								atts.montoObjetivo = montoObjetivo;
-							
-							if(montoPorPersona)
-								atts.montoPorPersona = montoPorPersona;
-							
-							if(fechaDeCierre)
-								atts.fechaDeCierre = fechaDeCierre;
-							
-
-
-							regaloEncontrado.updateAttributes(atts, function(err, update){
-							if (err)
-								return cb(err);
-
-							cb(null, true);
-							})
-					});   		
+					if (!descripcion && !montoObjetivo && !montoPorPersona && !fechaDeCierre)
+						return cb("Descripcion, monto objetivo, monto por persona y fecha de cierre, son datos requeridos", false);
 					
-			  }
-				ActualizoRegalo();
+						
+					var atts ={};
+					if(descripcion)
+						atts.descripcion = descripcion;
+					
+					if(montoObjetivo)
+						atts.montoObjetivo = montoObjetivo;
+					
+					if(montoPorPersona)
+						atts.montoPorPersona = montoPorPersona;
+					
+					if(fechaDeCierre)
+						atts.fechaDeCierre = fechaDeCierre;
 
+					if(fechaDeCierre)
+						atts.fechaDeCierre = fechaDeCierre;
 
+					if(sugerencias)
+						atts.regalosEnLosQueParticipa = sugerencias;
+
+					regaloEncontrado.updateAttributes(atts, function(err, update){
+					if (err)
+						return cb(err);
+
+					cb(null, true);
+					})
+			});   		
+			
+  		}
+		ActualizoRegalo();
 
 		}
 		Usuario.userUpdate = function(id, nombre, apellido, telefono, FechaNacimiento, cb) {
@@ -511,10 +513,10 @@ module.exports = function(Usuario) {
           description: 'Cierra una colecta'
         }
     );
-		Usuario.remoteMethod(
+	Usuario.remoteMethod(
         'regaloUpdate', 
         {
-          accepts: [{arg: 'id', type: 'string', required: true},{arg: 'regaloId', type: 'string', required: true}, {arg: 'descripcion', type: 'string', required: false}, {arg: 'montoObjetivo', type: 'number', required: false}, {arg: 'montoPorPersona', type: 'number', required: false},{arg: 'fechaDeCierre', type: 'date', required: false}],
+          accepts: [{arg: 'id', type: 'string', required: true},{arg: 'regaloId', type: 'string', required: true}, {arg: 'descripcion', type: 'string', required: true}, {arg: 'montoObjetivo', type: 'number', required: true}, {arg: 'montoPorPersona', type: 'number', required: true}, {arg: 'sugerencias', type: 'array', required: true}],
           returns: {arg: 'Updated', type: 'boolean'},
           http: {path: '/:id/regalos/:regaloId/actualizar', verb: 'post'},
           description: 'Actualiza una colecta'
@@ -524,7 +526,7 @@ module.exports = function(Usuario) {
 		Usuario.remoteMethod(
         'userUpdate', 
         {
-          accepts: [{arg: 'id', type: 'string', required: true},{arg: 'nombre', type: 'string', required: false},{arg: 'apellido', type: 'string', required: false},{arg: 'telefono', type: 'string', required: false},{arg: 'FechaNacimiento', type: 'date', required: false}],
+          accepts: [{arg: 'id', type: 'string', required: true},{arg: 'nombre', type: 'string', required: true},{arg: 'apellido', type: 'string', required: true},{arg: 'telefono', type: 'string', required: true},{arg: 'FechaNacimiento', type: 'date', required: true}],
           returns: {arg: 'Updated', type: 'boolean'},
           http: {path: '/:id/update', verb: 'post'},
           description: 'Actualiza Usuario'
