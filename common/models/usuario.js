@@ -357,7 +357,7 @@ module.exports = function(Usuario) {
     }
 
 
-	Usuario.regaloUpdate = function(id,regaloId, descripcion, montoObjetivo, montoPorPersona, fechaDeCierre, sugerencias, cb) {
+	Usuario.regaloUpdate = function(id,regaloId, descripcion, montoObjetivo, montoPorPersona, fechaDeCierre, cb) {
 		function ActualizoRegalo() {
 			app.models.Regalo.findById(regaloId, function(err, regaloEncontrado){
 				if (err)
@@ -382,9 +382,6 @@ module.exports = function(Usuario) {
 
 					if(fechaDeCierre)
 						atts.fechaDeCierre = fechaDeCierre;
-
-					if(sugerencias)
-						atts.regalosEnLosQueParticipa = sugerencias;
 
 					regaloEncontrado.updateAttributes(atts, function(err, update){
 					if (err)
@@ -516,7 +513,7 @@ module.exports = function(Usuario) {
 	Usuario.remoteMethod(
         'regaloUpdate', 
         {
-          accepts: [{arg: 'id', type: 'string', required: true},{arg: 'regaloId', type: 'string', required: true}, {arg: 'descripcion', type: 'string', required: true}, {arg: 'montoObjetivo', type: 'number', required: true}, {arg: 'montoPorPersona', type: 'number', required: true}, {arg: 'sugerencias', type: 'array', required: true}],
+          accepts: [{arg: 'id', type: 'string', required: true},{arg: 'regaloId', type: 'string', required: true}, {arg: 'descripcion', type: 'string', required: false}, {arg: 'montoObjetivo', type: 'number', required: false}, {arg: 'montoPorPersona', type: 'number', required: false}, {arg: 'fechaDeCierre', type: 'date', required: false}],
           returns: {arg: 'Updated', type: 'boolean'},
           http: {path: '/:id/regalos/:regaloId/actualizar', verb: 'post'},
           description: 'Actualiza una colecta'
