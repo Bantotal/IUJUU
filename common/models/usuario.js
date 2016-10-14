@@ -235,6 +235,38 @@ module.exports = function(Usuario) {
     	
     }
 
+    Usuario.regalosEliminarVoto = function(id, regaloId, voto, cb) {
+ 		app.models.Regalo.findById(regaloId, function(err, regaloEncontrado){
+			if (err)
+				return cb(err);
+
+			var regalosSugeridos = [];
+			async.each(regaloEncontrado.regalosSugeridos, function(item, callback) {
+
+				if(item.descripcion.toLowerCase() === voto.toLowerCase()) {
+					callback();
+				} else {
+					regalosSugeridos.push(item);
+					callback();
+				}
+
+			}, function(err){
+			    // if any of the file processing produced an error, err would equal that error
+			    if( err ) {
+			      return cb(err);
+			    } else {
+					regaloEncontrado.updateAttributes({ regalosSugeridos: regalosSugeridos }, function(err, update){
+						if (err)
+							return cb(err);
+
+						cb(null, regalosSugeridos);
+					})	
+			    }
+			});
+		});   		
+    	
+    }
+
     Usuario.regalosPago = function(id, regaloId, pago, cb) {
 
     	function modificoRegalo(pagoCreado) {
@@ -457,6 +489,16 @@ module.exports = function(Usuario) {
           returns: {arg: 'regalosSugeridos', type: 'array'},
           http: {path: '/:id/regalos/:regaloId/votar', verb: 'post'},
           description: 'Agrega una nueva sugerencia de regalo o vota por alguna existente'
+        }
+    );
+
+    Usuario.remoteMethod(
+        'regalosEliminarVoto', 
+        {
+          accepts: [{arg: 'id', type: 'string', required: true}, {arg: 'regaloId', type: 'string', required: true}, {arg: 'voto', type: 'String', required: true}],
+          returns: {arg: 'regalosSugeridos', type: 'array'},
+          http: {path: '/:id/regalos/:regaloId/eliminarSugerencia', verb: 'post'},
+          description: 'Elimina una sugerencia de regalo'
         }
     );
 
