@@ -537,14 +537,14 @@ function enviarMail(id, regaloId, email, cb) {
 						var fullcomments= "";
 
 						async.each(modelInstance, function(instance, callback) {
-							Usuario.findById(instance.usuarioId, function(err, usuarioEncontrado) {
-									if (err)
-										return cb(err);
+								Usuario.findById(instance.usuarioId, function(err, usuarioEncontrado) {
+										if (err)
+											return cb(err);
 
-								usercomment = '<div><p><strong>'+usuarioEncontrado.nombre + ' ' + usuarioEncontrado.appellido + '</strong>:' + instance.comentario +'</p> <img style="width:200px;" src="'+ instance.foto +'"></div><br>';
-								fullcomments = fullcomments + usercomment;
-								callback();			
-							}
+									usercomment = '<div><p><strong>'+usuarioEncontrado.nombre + ' ' + usuarioEncontrado.appellido + '</strong>:' + instance.comentario +'</p> <img style="width:200px;" src="'+ instance.foto +'"></div><br>';
+									fullcomments = fullcomments + usercomment;
+									callback();			
+								});
 						}, function(err){
 							// if any of the file processing produced an error, err would equal that error
 							if( err ) {
@@ -575,8 +575,8 @@ function enviarMail(id, regaloId, email, cb) {
 											
 								});
 							}
-						});
-						
+						})
+					
 			 });
 
 }
