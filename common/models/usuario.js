@@ -536,34 +536,47 @@ function enviarMail(id, regaloId, email, cb) {
 						var usercomment = "";
 						var fullcomments= "";
 
-						for(var k in modelInstance){
-									usercomment = '<div><p>'+ modelInstance[k].comentario +'</p> <img src="'+ modelInstance[k].foto +'"></div><br>'
-									fullcomments = fullcomments + usercomment
-						}
-						var nodemailer = require('nodemailer');
-						var inlineBase64 = require('nodemailer-plugin-inline-base64');
+						async.each(modelInstance, function(instance, callback) {
+							Usuario.findById(instance.usuarioId, function(err, usuarioEncontrado) {
+									if (err)
+										return cb(err);
 
-						// create reusable transporter object using the default SMTP transport
-						var transporter = nodemailer.createTransport('smtps://iujuu.regalo%40gmail.com:ABCD1234%40@smtp.gmail.com');
+								usercomment = '<div><p><strong>'+usuarioEncontrado.nombre + ' ' + usuarioEncontrado.appellido + '</strong>:' + instance.comentario +'</p> <img src="'+ instance.foto +'"></div><br>';
+								fullcomments = fullcomments + usercomment;
+								callback();			
+							}
+						}, function(err){
+							// if any of the file processing produced an error, err would equal that error
+							if( err ) {
+							  return cb(err);
+							} else {
+								var nodemailer = require('nodemailer');
+								var inlineBase64 = require('nodemailer-plugin-inline-base64');
 
-						// setup e-mail data with unicode symbols
-						var mailOptions = {
-								from: '"IUJUU" <iujuu.regalo@gmail.com>', // sender address
-								to: email, // list of receivers
-								subject: 'IUJUU tu regalo llego', // Subject line
-								html: '<b>Regalar nunca fue tan simple</b><br>' + fullcomments // html body
-						};
-						transporter.use('compile', inlineBase64);
-						// send mail with defined transport object
-						transporter.sendMail(mailOptions, function(error, info){
-									if(error){
-												return cb("Error enviando email", false);
-									}else{
-												console.log('Message sent: ' + info.response);
-												modificoRegalo(id, regaloId, email, cb);
-									}
-									
+								// create reusable transporter object using the default SMTP transport
+								var transporter = nodemailer.createTransport('smtps://iujuu.regalo%40gmail.com:ABCD1234%40@smtp.gmail.com');
+
+								// setup e-mail data with unicode symbols
+								var mailOptions = {
+										from: '"IUJUU" <iujuu.regalo@gmail.com>', // sender address
+										to: email, // list of receivers
+										subject: 'IUJUU tu regalo llego', // Subject line
+										html: '<b>Regalar nunca fue tan simple</b><br>' + fullcomments // html body
+								};
+								transporter.use('compile', inlineBase64);
+								// send mail with defined transport object
+								transporter.sendMail(mailOptions, function(error, info){
+											if(error){
+														return cb("Error enviando email", false);
+											}else{
+														console.log('Message sent: ' + info.response);
+														modificoRegalo(id, regaloId, email, cb);
+											}
+											
+								});
+							}
 						});
+						
 			 });
 
 }
@@ -581,7 +594,9 @@ function modificoRegalo(id, regaloId, email, cb) {
         })
     });   		
 }
-        
+
+
+
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
