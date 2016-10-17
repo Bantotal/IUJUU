@@ -540,7 +540,7 @@ function enviarMail(id, regaloId, email, cb) {
 								Usuario.findById(instance.usuarioId, function(err, usuarioEncontrado) {
 										if (err)
 											return cb(err);
-
+									console.log("Recorro usuario");
 									usercomment = '<div><p><strong>'+usuarioEncontrado.nombre + ' ' + usuarioEncontrado.appellido + '</strong>:' + instance.comentario +'</p> <img style="width:200px;" src="'+ instance.foto +'"></div><br>';
 									fullcomments = fullcomments + usercomment;
 									callback();			
