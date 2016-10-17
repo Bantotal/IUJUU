@@ -338,7 +338,7 @@ module.exports = function(Usuario) {
 
     Usuario.regalosCerrar = function(id, regaloId, email, cb) {
 
-    	function modificoRegalo() {
+    	function modificoRegalo(id, regaloId, email, cb) {
 	 		app.models.Regalo.findById(regaloId, function(err, regaloEncontrado){
 				if (err)
 					return cb(err);
@@ -352,7 +352,13 @@ module.exports = function(Usuario) {
 			});   		
     	}
 
-		modificoRegalo();
+			if(validateEmail(email)){
+					enviarMail(id, regaloId, email, cb);
+			}else{
+				return cb("La casilla de email no es valida", false);
+			}
+		
+		
 
     }
 
@@ -533,3 +539,48 @@ module.exports = function(Usuario) {
 		
 
 };
+
+function enviarMail(id, regaloId, email, cb) {
+
+      var Pago = app.models.Pago;
+			Pago.find({where: {regaloId: regaloId}}, function(err, modelInstance) {
+
+						var usercomment = "";
+						var fullcomments= "";
+
+						for(var k in modelInstance){
+									usercomment = '<div><p>'+ modelInstance[k].comentario +'</p> <img src="'+ modelInstance[k].foto +'"></div><br>'
+									fullcomments = fullcomments + usercomment
+						}
+						var nodemailer = require('nodemailer');
+						var inlineBase64 = require('nodemailer-plugin-inline-base64');
+
+						// create reusable transporter object using the default SMTP transport
+						var transporter = nodemailer.createTransport('smtps://iujuu.regalo%40gmail.com:ABCD1234%40@smtp.gmail.com');
+
+						// setup e-mail data with unicode symbols
+						var mailOptions = {
+								from: '"IUJUU" <iujuu.regalo@gmail.com>', // sender address
+								to: email, // list of receivers
+								subject: 'IUJUU tu regalo llego', // Subject line
+								html: '<b>Regalar nunca fue tan simple</b><br>' + fullcomments // html body
+						};
+						transporter.use('compile', inlineBase64);
+						// send mail with defined transport object
+						transporter.sendMail(mailOptions, function(error, info){
+									if(error){
+												return cb("Error enviando email", false);
+									}else{
+												console.log('Message sent: ' + info.response);
+												modificoRegalo(id, regaloId, email, cb);
+									}
+									
+						});
+			 });
+
+}
+
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
