@@ -338,19 +338,7 @@ module.exports = function(Usuario) {
 
     Usuario.regalosCerrar = function(id, regaloId, email, cb) {
 
-    	function modificoRegalo(id, regaloId, email, cb) {
-	 		app.models.Regalo.findById(regaloId, function(err, regaloEncontrado){
-				if (err)
-					return cb(err);
-
-			    regaloEncontrado.updateAttributes({ activo: false }, function(err, update){
-					if (err)
-						return cb(err);
-
-					cb(null, true);
-			    })
-			});   		
-    	}
+    	
 
 			if(validateEmail(email)){
 					enviarMail(id, regaloId, email, cb);
@@ -580,6 +568,20 @@ function enviarMail(id, regaloId, email, cb) {
 
 }
 
+function modificoRegalo(id, regaloId, email, cb) {
+    app.models.Regalo.findById(regaloId, function(err, regaloEncontrado){
+        if (err)
+            return cb(err);
+
+        regaloEncontrado.updateAttributes({ activo: false }, function(err, update){
+            if (err)
+                return cb(err);
+
+            cb(null, true);
+        })
+    });   		
+}
+        
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
