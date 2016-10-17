@@ -541,7 +541,7 @@ function enviarMail(id, regaloId, email, cb) {
 									if (err)
 										return cb(err);
 
-								usercomment = '<div><p><strong>'+usuarioEncontrado.nombre + ' ' + usuarioEncontrado.appellido + '</strong>:' + instance.comentario +'</p> <img src="'+ instance.foto +'"></div><br>';
+								usercomment = '<div><p><strong>'+usuarioEncontrado.nombre + ' ' + usuarioEncontrado.appellido + '</strong>:' + instance.comentario +'</p> <img style="width:200px;" src="'+ instance.foto +'"></div><br>';
 								fullcomments = fullcomments + usercomment;
 								callback();			
 							}
